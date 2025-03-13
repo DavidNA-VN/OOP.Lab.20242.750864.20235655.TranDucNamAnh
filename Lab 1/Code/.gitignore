@@ -1,12 +1,8 @@
-# Ignore bin folder
-/bin/
-
-# Ignore Eclipse project files
+# Ẩn các file rác của Eclipse
+bin/
 .classpath
 .project
 .settings/
 
-# Ignore temporary files
-*.class
-*.log
-*.tmp
+# Ẩn file .gitignore trên GitHub
+.gitignore
