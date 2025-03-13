@@ -1,5 +1,12 @@
+# Ignore bin folder
+/bin/
 
 # Ignore Eclipse project files
 .classpath
 .project
 .settings/
+
+# Ignore temporary files
+*.class
+*.log
+*.tmp
