@@ -1,8 +1,0 @@
-# Ẩn các file rác của Eclipse
-bin/
-.classpath
-.project
-.settings/
-
-# Ẩn file .gitignore trên GitHub
-.gitignore
