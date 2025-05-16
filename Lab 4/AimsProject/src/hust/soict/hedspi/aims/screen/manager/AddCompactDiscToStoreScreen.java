@@ -1,111 +1,80 @@
 package hust.soict.hedspi.aims.screen.manager;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 import hust.soict.hedspi.aims.media.CompactDisc;
 import hust.soict.hedspi.aims.store.Store;
 
 public class AddCompactDiscToStoreScreen extends AddItemToStoreScreen {
 
-	public AddCompactDiscToStoreScreen(Store store) {
-		super(store);
-	}
+    public AddCompactDiscToStoreScreen(Store store) {
+        super(store);
+    }
 
-	@Override
-	protected JPanel createCenter() {
-		JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10)); // 6 fields + button
+    @Override
+    protected JPanel createCenter() {
+        JPanel panel = new JPanel(new GridLayout(7, 2, 10, 10)); // 6 fields + button
 
-		// Create labels and text fields
-		JLabel titleLabel = new JLabel("Title:");
-		JTextField titleField = new JTextField();
-		titleField.setPreferredSize(new Dimension(200, 25));
+        // Create labels and text fields
+        JLabel titleLabel = new JLabel("Title:");
+        JTextField titleField = new JTextField();
 
-		JLabel categoryLabel = new JLabel("Category:");
-		JTextField categoryField = new JTextField();
-		categoryField.setPreferredSize(new Dimension(200, 25));
+        JLabel categoryLabel = new JLabel("Category:");
+        JTextField categoryField = new JTextField();
 
-		JLabel costLabel = new JLabel("Cost:");
-		JTextField costField = new JTextField();
-		costField.setPreferredSize(new Dimension(200, 25));
+        JLabel costLabel = new JLabel("Cost:");
+        JTextField costField = new JTextField();
 
-		JLabel directorLabel = new JLabel("Director:");
-		JTextField directorField = new JTextField();
-		directorField.setPreferredSize(new Dimension(200, 25));
+        JLabel directorLabel = new JLabel("Director:");
+        JTextField directorField = new JTextField();
 
-		JLabel lengthLabel = new JLabel("Length:");
-		JTextField lengthField = new JTextField();
-		lengthField.setPreferredSize(new Dimension(200, 25));
+        JLabel lengthLabel = new JLabel("Length:");
+        JTextField lengthField = new JTextField();
 
-		JLabel artistLabel = new JLabel("Artist:");
-		JTextField artistField = new JTextField();
-		artistField.setPreferredSize(new Dimension(200, 25));
+        JLabel artistLabel = new JLabel("Artist:");
+        JTextField artistField = new JTextField();
 
-		// Add button
-		JButton addButton = new JButton("Add CD");
-		addButton.addActionListener((ActionEvent e) -> addCompactDiscToStore(titleField, categoryField, costField,
-				directorField, lengthField, artistField));
+        // Add button
+        JButton addButton = new JButton("Add CD");
+        addButton.addActionListener((ActionEvent e) -> {
+            try {
+                String title = titleField.getText();
+                String category = categoryField.getText();
+                float cost = Float.parseFloat(costField.getText());
+                String director = directorField.getText();
+                int length = Integer.parseInt(lengthField.getText());
+                String artist = artistField.getText();
 
-		panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-		panel.add(titleLabel);
-		panel.add(titleField);
-		panel.add(categoryLabel);
-		panel.add(categoryField);
-		panel.add(costLabel);
-		panel.add(costField);
-		panel.add(directorLabel);
-		panel.add(directorField);
-		panel.add(lengthLabel);
-		panel.add(lengthField);
-		panel.add(artistLabel);
-		panel.add(artistField);
-		panel.add(new JLabel());
-		panel.add(addButton);
+                CompactDisc cd = new CompactDisc(title, category, cost, director, length, artist);
+                store.addMedia(cd);
 
-		return panel;
-	}
+                JOptionPane.showMessageDialog(null, "CD added successfully!");
+                dispose();
+                new StoreManagerScreen(store);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Invalid input! Please check your data.");
+            }
+        });
 
-	private void addCompactDiscToStore(JTextField titleField, JTextField categoryField, JTextField costField,
-			JTextField directorField, JTextField lengthField, JTextField artistField) {
-		try {
-			String title = titleField.getText().trim();
-			String category = categoryField.getText().trim();
-			String director = directorField.getText().trim();
-			String artist = artistField.getText().trim();
+        // Add components to panel
+        panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        panel.add(titleLabel);    
+	panel.add(titleField);
+        panel.add(categoryLabel); 
+	panel.add(categoryField);
+        panel.add(costLabel);    
+	panel.add(costField);
+        panel.add(directorLabel); 
+	panel.add(directorField);
+        panel.add(lengthLabel);   
+	panel.add(lengthField);
+        panel.add(artistLabel);   
+	panel.add(artistField);
+        panel.add(new JLabel());  
+	panel.add(addButton);
 
-			// Kiểm tra dữ liệu nhập rỗng
-			if (title.isEmpty() || category.isEmpty() || artist.isEmpty()) {
-				JOptionPane.showMessageDialog(null, "Title, Category, and Artist cannot be empty.", "Input Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			float cost = Float.parseFloat(costField.getText().trim());
-			int length = Integer.parseInt(lengthField.getText().trim());
-
-			if (cost < 0 || length < 0) {
-				JOptionPane.showMessageDialog(null, "Cost and Length must be non-negative.", "Input Error",
-						JOptionPane.ERROR_MESSAGE);
-				return;
-			}
-
-			CompactDisc cd = new CompactDisc(title, category, cost, director, length, artist);
-			store.addMedia(cd);
-
-			JOptionPane.showMessageDialog(null, "CD added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
-			dispose();
-			new StoreManagerScreen(store);
-		} catch (NumberFormatException ex) {
-			JOptionPane.showMessageDialog(null, "Please enter valid numeric values for Cost and Length.", "Input Error",
-					JOptionPane.ERROR_MESSAGE);
-		}
-	}
+        return panel;
+    }
 }
